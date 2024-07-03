@@ -15,11 +15,17 @@ import Link from 'next/link'
 import Icon_spinner from '@/app/components/icons/Icon_spinner'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/config/supabase/supabaseClient'
-// import Icon_linkedin from '@/app/components/icons/Icon_linkedin'
-// import Icon_facebook from '@/app/components/icons/Icon_facebook'
 
 const ClientLogin = () => {
-  const { register, handleSubmit, formState } = useForm()
+  const { register, handleSubmit, formState } = useForm({
+    defaultValues: async () => {
+      const localData = JSON.parse(localStorage.getItem('saved password'))
+      return {
+        email: localData?.myLocalData?.email,
+        password: localData?.myLocalData?.password,
+      }
+    },
+  })
   const [toast, settoast] = useState(null)
   const [loading, setloading] = useState(false)
   const [showPassword, setshowPassword] = useState(false)
@@ -48,8 +54,14 @@ const ClientLogin = () => {
           const { email, password } = data
           localStorage.setItem(
             'saved password',
-            JSON.stringify({ email, password })
+            JSON.stringify({
+              email,
+              password,
+              savePassword: data?.savePassword,
+            })
           )
+        } else {
+          localStorage.removeItem('saved password')
         }
       }
     }
@@ -146,15 +158,6 @@ const ClientLogin = () => {
               <Icon_google className="size-6" />
               Google
             </div>
-            {/* <div
-              className={
-                'flex cursor-pointer rounded-md w-full justify-center shadow-sm border-[1px] py-[10px] px-3 border-[#D1D5DB] gap-2'
-              }
-              onClick={() => handleLoginWithOAuth('facebook')}
-            >
-              <Icon_facebook className="size-6 text-[#1977F3]" />
-              Facebook
-            </div> */}
           </div>
         </div>
       </form>
