@@ -25,11 +25,11 @@ module.exports = {
         custom6: '3px 3px 3px 0px rgba(0, 0, 0, 0.22)',
         customInner1: 'rgba(0, 0, 0, 0.22) 0px 1px 4px inset',
       },
-      fontFamily: {
-        sans: ['var(--franklinGothicBook)'],
-        demiCond: ['var(--franklinGothicDemiCond)'],
-        mediumCond: ['var(--franklinGothicMediumCond)'],
-      },
+      // fontFamily: {
+      //   sans: ['var(--franklinGothicBook)'],
+      //   demiCond: ['var(--franklinGothicDemiCond)'],
+      //   mediumCond: ['var(--franklinGothicMediumCond)'],
+      // },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
