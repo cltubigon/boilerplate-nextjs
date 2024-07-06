@@ -22,7 +22,7 @@ const Homepage = async () => {
           ? `${isLoggedIn?.email} is logged in.`
           : 'You are not logged in'}
       </p>
-      {isLoggedIn && <LogoutButton />}
+      {isLoggedIn && <LogoutButton  className={'w-fit'}/>}
       {/* </div> */}
     </>
   )

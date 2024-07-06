@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import Input from '@/app/components/inputsFields/InputGroup/Input'
 import Divider from '@/app/components/Divider'
-import Icon_google from '@/app/components/icons/Icon_google'
 import Button from '@/app/components/Button'
 import Checkbox from '@/app/components/inputsFields/Checkbox'
 import { useForm } from 'react-hook-form'
@@ -14,7 +13,7 @@ import LoginSignupContainer from '@/app/components/LoginSignupContainer'
 import Link from 'next/link'
 import Icon_spinner from '@/app/components/icons/Icon_spinner'
 import { useSearchParams } from 'next/navigation'
-import { createClient } from '@/config/supabase/supabaseClient'
+import OAuthGoogleSignIn from './OAuthGoogleSignIn'
 
 const ClientLogin = () => {
   const { register, handleSubmit, formState } = useForm({
@@ -69,16 +68,6 @@ const ClientLogin = () => {
   }
   const showHideClicked = () => {
     setshowPassword(() => !showPassword)
-  }
-
-  const handleLoginWithOAuth = async (provider) => {
-    const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: location.origin + '/confirm-signup/callback',
-      },
-    })
   }
 
   return (
@@ -148,17 +137,7 @@ const ClientLogin = () => {
               <span className="px-4">Or continue with</span>
             </Divider>
           </div>
-          <div className={'flex gap-4 select-none'}>
-            <div
-              className={
-                'flex cursor-pointer rounded-md w-full justify-center shadow-sm border-[1px] py-[10px] px-3 border-[#D1D5DB] gap-2'
-              }
-              onClick={() => handleLoginWithOAuth('google')}
-            >
-              <Icon_google className="size-6" />
-              Google
-            </div>
-          </div>
+          <OAuthGoogleSignIn />
         </div>
       </form>
     </LoginSignupContainer>
