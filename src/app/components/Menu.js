@@ -4,11 +4,6 @@ import { twMerge } from 'tailwind-merge'
 
 // Must have a parent positioned as "Relative"
 
-// import dynamic from 'next/dynamic'
-// const Menu = dynamic(() => import('@/app/components/Menu.js'), { ssr: false })
-
-// or
-
 // import Menu from '@/app/components/Menu.js'
 
 // const [showModal, setShowModal] = useState(false)
