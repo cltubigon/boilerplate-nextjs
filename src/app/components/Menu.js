@@ -12,7 +12,7 @@ import { twMerge } from 'tailwind-merge'
 // <Button
 //   ref={buttonRef}
 //   onClick={() => setShowModal(!showModal)}
-//   className="clt-modal"
+//   className='clt-modal'
 // >
 //   Toggle Modal
 // </Button>
@@ -21,9 +21,9 @@ import { twMerge } from 'tailwind-merge'
 //     showModal={showModal}
 //     setShowModal={setShowModal}
 //     referenceElement={buttonRef}
-//     containerHeight={160}
-//     containerWidth={350}
+//     containerHeight={230}
 //     className="w-[350px]"
+//     containerWidth={350}     //optional
 //     spaceFromElement={10}    //optional
 //   >
 //     Hello world
@@ -52,7 +52,7 @@ const getXPosition = ({ reference, containerWidth }) => {
   }
 }
 
-const Menu = ({ children, ...props }) => {
+const Menu = ({ children, classId, ...props }) => {
   const {
     containerHeight,
     containerWidth,
@@ -62,7 +62,7 @@ const Menu = ({ children, ...props }) => {
     spaceFromElement,
   } = props
   const reference = referenceElement?.current?.getBoundingClientRect()
-  const modalRef = useRef(null)
+  const referenceHeight = referenceElement?.current?.offsetHeight
 
   let yPosition = getYPosition({
     reference,
@@ -72,23 +72,21 @@ const Menu = ({ children, ...props }) => {
     reference,
     containerWidth: containerWidth,
   })
-
   const triggeredFunction = (e) => {
     const currElem = e.target?.className
     const currParent = e.target?.parentElement?.className
 
     if (typeof currElem === 'string' && typeof currParent === 'string') {
-      if (
-        !currElem?.includes('clt-modal') &&
-        !currParent?.includes('clt-modal')
-      ) {
-        setShowModal(!showModal)
+      if (!currElem?.includes(classId) && !currParent?.includes(classId)) {
+        setShowModal(() => !showModal)
       }
     }
   }
 
   useEffect(() => {
-    document.addEventListener('click', (e) => triggeredFunction(e))
+    document.addEventListener('click', triggeredFunction)
+
+    return () => document.removeEventListener('click', triggeredFunction)
   }, [])
 
   if (!showModal) {
@@ -98,21 +96,21 @@ const Menu = ({ children, ...props }) => {
   return (
     <>
       <div
-        ref={modalRef}
         className={twMerge(
-          'clt-modal flex flex-col justify-center overflow-auto absolute z-20 bg-white border-[1px] select-none border-[#ccc] shadow-md p-4 w-full',
+          `${classId} flex flex-col justify-center overflow-auto absolute z-20 bg-white border-[1px] select-none border-[#ccc] shadow-md p-4 w-full`,
           props?.className
         )}
         style={{
           top:
-            yPosition === 'top' &&
-            `-${containerHeight + (spaceFromElement || 0)}px`,
-          bottom:
             yPosition === 'bottom' &&
-            `-${containerHeight + (spaceFromElement || 0)}px`,
+            `${referenceHeight + (spaceFromElement || 0)}px`,
+          bottom:
+            yPosition === 'top' &&
+            `${referenceHeight + (spaceFromElement || 0)}px`,
           left: xPosition === 'left' && '0',
           right: xPosition === 'right' && '0',
-          height: `${containerHeight}px`,
+          height: 'fit-content',
+          maxHeight: `${containerHeight}px`,
         }}
       >
         {children}
